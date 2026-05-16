@@ -1,0 +1,394 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+    /> -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css"
+    />
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>-->
+    <link
+      href="https://unpkg.com/tabulator-tables@5.6.1/dist/css/tabulator.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/tabulator-tables@5.6.1/dist/js/tabulator.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+      .tabulator {
+        background-color: transparent;
+        color: #e5e7eb;
+        border: none;
+        min-width: 100%;
+        font-family: ui-sans-serif, system-ui;
+      }
+
+      .tabulator-tableholder {
+        overflow-x: auto !important;
+      }
+      /* Header */
+      .tabulator .tabulator-header {
+        background-color: #111827;
+        border-bottom: 1px solid #1f2937;
+      }
+
+      .tabulator .tabulator-col {
+        background-color: #111827 !important;
+        color: #9ca3af;
+      }
+
+      /* Rows */
+      .tabulator .tabulator-row {
+        background-color: #0f172a;
+        border-bottom: 1px solid #1f2937;
+        color: #e5e7eb;
+      }
+
+      /* Hover effect */
+      .tabulator .tabulator-row:hover {
+        background-color: #1f2937;
+      }
+
+      /* Selected row */
+      .tabulator .tabulator-row.tabulator-selected {
+        background-color: #1e293b;
+      }
+
+      /* Pagination */
+      .tabulator .tabulator-footer {
+        background-color: #111827;
+        border-top: 1px solid #1f2937;
+        color: #9ca3af;
+      }
+
+      /* Inputs (search/filter) */
+      .tabulator input {
+        background-color: #0f172a;
+        color: white;
+        border: 1px solid #1f2937;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mx-auto">
+      <!-- HEADER -->
+      <header
+        class="sticky top-0 z-30 bg-gray-900 border-b border-gray-800 px-4 py-6 flex items-center justify-between"
+      >
+        <h1 class="text-2xl md:text-4xl font-bold">💸 Expense Tracker</h1>
+
+        <!-- Summary button — mobile only -->
+        <button
+          onclick="openSidebar()"
+          class="lg:hidden flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-3 py-2 rounded-lg transition"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-4 h-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
+          Summary
+        </button>
+      </header>
+      <!-- MOBILE SIDEBAR OVERLAY -->
+      <div id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+      <!-- MOBILE SIDEBAR -->
+      <div id="mobileSidebar">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-white font-semibold text-lg">📊 Summary</h2>
+          <button
+            onclick="closeSidebar()"
+            style="
+              font-size: 1.5rem;
+              line-height: 1;
+              background: none;
+              border: none;
+              color: #9ca3af;
+              cursor: pointer;
+            "
+          >
+            &times;
+          </button>
+        </div>
+        <ul
+          id="categoryTotalsMobile"
+          class="text-white capitalize text-left leading-loose"
+        ></ul>
+      </div>
+
+      <!-- Content Wrapper -->
+      <div
+        class="h-auto flex max-lg:flex-wrap w-full lg:grid relative lg:grid-cols-7"
+      >
+        <!-- EXPENSE CREATION FORM -->
+        <div
+          class="lg:min-h-screen w-full lg:col-span-5 max-lg:flex items-center justify-center p-6"
+        >
+          <div
+            class="max-lg:mt-[40px] w-full mx-auto max-w-full lg:max-w-md bg-gray-800 rounded-2xl border border-gray-800 p-8"
+          >
+            <div class="mb-8">
+              <h2 class="text-xl font-medium text-gray-100">Add Expense</h2>
+              <p class="text-sm text-gray-500 mt-1">Track your spending</p>
+            </div>
+
+            <div class="flex flex-col gap-4">
+              <div>
+                <label
+                  class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-2"
+                  >Title</label
+                >
+                <input
+                  id="title"
+                  name="title"
+                  placeholder="Title"
+                  class="w-full bg-gray-700 border border-gray-600 rounded-xl px-4 py-3 text-white"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-2"
+                  >Payment Method</label
+                >
+                <input
+                  id="payment_method"
+                  placeholder="e.g Card"
+                  list="pay_methods"
+                  name="payment_method"
+                  class="w-full bg-gray-700 border border-gray-600 rounded-xl px-4 py-3 text-white"
+                />
+                <datalist id="pay_methods">
+                  <option value="Cash"></option>
+                  <option value="Online"></option>
+                  <option value="Card"></option>
+                  <option value="Other"></option>
+                </datalist>
+              </div>
+
+              <div>
+                <label
+                  class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-2"
+                  >Category</label
+                >
+
+                <input
+                  id="category"
+                  placeholder="Category"
+                  list="categories"
+                  name="categories"
+                  class="w-full bg-gray-700 border border-gray-600 rounded-xl px-4 py-3 text-white"
+                />
+
+                <datalist id="categories">
+                  <option value="Food"></option>
+                  <option value="Transport"></option>
+                  <option value="Shopping"></option>
+                  <option value="Bills"></option>
+                  <option value="Entertainment"></option>
+                  <option value="Health"></option>
+                </datalist>
+              </div>
+
+              <div>
+                <label
+                  class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-2"
+                  >Amount Spent</label
+                >
+                <input
+                  id="amount"
+                  type="number"
+                  name="amount"
+                  placeholder="Amount"
+                  class="w-full bg-gray-700 border border-gray-600 rounded-xl px-4 py-3 text-white"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-2"
+                  >Date</label
+                >
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  onclick="this.showPicker()"
+                  class="w-full bg-gray-700 border border-gray-600 rounded-xl px-4 py-3 text-sm text-gray-100 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-20 transition cursor-pointer"
+                />
+              </div>
+
+              <button
+                onclick="addExpense()"
+                class="cursor-pointer bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl"
+              >
+                Add Expense
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DESKTOP SIDEBAR -->
+        <div
+          id="categorySidebar"
+          style="box-shadow: inset 0px 0px 7px 3px rgba(250, 244, 244, 0.1)"
+          class="fixed hidden w-[25%] p-6 mt-5 bg-gray-800 h-[440px] overflow-y-auto right-8 rounded-2xl lg:grid"
+        >
+          <h2 class="text-white text-center w-full font-semibold text-lg">
+            📊 Summary
+          </h2>
+
+          <div>
+            <ul
+              id="categoryTotals"
+              class="text-white capitalize text-left leading-loose mt-4"
+            ></ul>
+          </div>
+        </div>
+
+        <!-- Tabulator table  -->
+        <div class="w-full lg:col-span-5 relative">
+          <h2 class="text-3xl mt-10 mb-6">Expenses</h2>
+          <button
+            style="padding: 9px 17px; border-radius: 5px"
+            onclick="downloadExcel()"
+            class="absolute cursor-pointer text-sm bg-green-500 top-10 right-4 text-white"
+          >
+            Download Excel
+          </button>
+          <div class="overflow-x-auto rounded-2xl mb-16 border border-gray-800">
+            <!-- <table
+              id="expenseTable"
+              class="text-left w-full text-sm text-gray-300"
+            >
+              <thead>
+                <tr class="border-b border-slate-600">
+                  <th class="py-5 pl-5">Title</th>
+                  <th class="py-5">Category</th>
+                  <th class="py-5">Method</th>
+                  <th class="py-5">Amount</th>
+                  <th class="py-5">Date</th>
+                  <th class="py-5">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody id="list" class="divide-y divide-gray-800"></tbody>
+            </table> -->
+
+            <div
+              class="bg-gray-900 p-4 rounded-2xl border border-gray-800 shadow-lg"
+            >
+              <div id="expenseTable"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- edit modal form -->
+    <div
+      id="editModal"
+      class="fixed inset-0 backdrop-blur-xs bg-black/50 bg-opacity-[0.3] hidden flex items-center justify-center"
+    >
+      <div
+        class="bg-gray-800 p-6 rounded-xl w-[400px]"
+        style="box-shadow: 0px 4px 12px 6px rgba(255, 255, 255, 0.2)"
+      >
+        <h2 class="text-white text-xl mb-4">Edit Expense</h2>
+
+        <label
+          for="edit_title"
+          class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-1"
+          >Title</label
+        >
+        <input
+          id="edit_title"
+          class="w-full mb-3 p-2 bg-gray-700 text-white"
+          placeholder="Title"
+        />
+        <label
+          for="edit_category"
+          class="block text-xs font-medium text-gray-300 uppercase tracking-widest mt-2 mb-1"
+          >Category</label
+        >
+        <input
+          id="edit_category"
+          class="w-full mb-3 p-2 bg-gray-700 text-white"
+          placeholder="Category"
+        />
+        <label
+          for="edit_payment"
+          class="block text-xs font-medium text-gray-300 uppercase tracking-widest mt-2 mb-1"
+          >Payment method</label
+        >
+        <input
+          id="edit_payment"
+          class="w-full mb-3 p-2 bg-gray-700 text-white"
+          placeholder="Payment Method"
+        />
+        <label
+          for="edit_amount"
+          class="block text-xs font-medium text-gray-300 uppercase tracking-widest mt-2 mb-1"
+          >Amount</label
+        >
+        <input
+          id="edit_amount"
+          type="number"
+          class="w-full mb-3 p-2 bg-gray-700 text-white"
+          placeholder="Amount"
+        />
+        <label
+          for="edit_date"
+          class="block text-xs font-medium text-gray-300 uppercase tracking-widest mt-2 mb-1"
+          >Date</label
+        >
+        <input
+          id="edit_date"
+          type="date"
+          class="w-full mb-3 p-2 bg-gray-700 text-white"
+        />
+
+        <div class="flex justify-between mt-4">
+          <button
+            onclick="updateExpense()"
+            class="bg-green-600 cursor-pointer px-4 py-2 rounded"
+          >
+            Save
+          </button>
+          <button
+            onclick="closeModal()"
+            class="bg-red-600 cursor-pointer px-4 py-2 rounded"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
