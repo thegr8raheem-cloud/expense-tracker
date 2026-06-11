@@ -32,19 +32,12 @@ public class ExpenseController {
         return service.getAllExpenses();
     }
 
-
-
     @PostMapping
     public ResponseEntity<String> add(@RequestBody Expense expense) {
         service.addExpense(expense);
         return ResponseEntity.status(201).body("Expense created successfully");
 
     }
-    // public Expense add(@RequestBody Expense expense) {
-    //  return service.addExpense(expense);
-    // }
-
-
 
     // update/edit data method
     @PutMapping("/{id}")
@@ -52,12 +45,6 @@ public class ExpenseController {
         service.updateExpense(id, updated);
         return ResponseEntity.ok("Expense updated successfully");
     }
-    // public Expense update(@PathVariable Long id, @RequestBody Expense updated) {
-    // return service.updateExpense(id, updated);
-    // }
-
-
-
 
     // delete data method
     @DeleteMapping("/{id}")
@@ -65,8 +52,5 @@ public class ExpenseController {
         service.deleteExpense(id);
         return ResponseEntity.ok("Expense deleted successfully");
     }
-    // public void delete(@PathVariable Long id) {
-    // service.deleteExpense(id);
-    // }
 
 }

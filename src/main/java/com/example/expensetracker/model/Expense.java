@@ -21,7 +21,8 @@ public class Expense {
     }
 
     // Constructor
-    public Expense(String title, String paymentMethod, String category, double amount, LocalDate date) {
+    public Expense(String title, String paymentMethod,
+    String category, double amount, LocalDate date) {
         this.title = title;
         this.category = category;
         this.paymentMethod = paymentMethod;

@@ -30,7 +30,8 @@ public class ExpenseService {
 
     public Expense updateExpense(Long id, Expense updated) {
 
-        Expense existing = repo.findById(id).orElseThrow(() -> new RuntimeException("Expense not found"));
+        Expense existing = repo.findById(id).orElseThrow(() 
+        -> new RuntimeException("Expense not found"));
 
         // update fields
         existing.setTitle(updated.getTitle());
@@ -46,3 +47,6 @@ public class ExpenseService {
         repo.deleteById(id);
     }
 }
+
+
+
