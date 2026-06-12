@@ -33,16 +33,16 @@
 
 ## Database
 
-Uses H2 in-memory/file database — created automatically on first run. No setup needed.
+Uses H2 in-memory/file database, created automatically on first run. No setup needed.
 
 ## Authors
 
-Umaima Tahir
-Abdul Raheem
-Asadullah
-Alishba Khan
-Saim Kamran
-Vazeema Khan
+Umaima Tahir, 
+Abdul Raheem, 
+Asadullah, 
+Alishba Khan, 
+Saim Kamran, 
+Vazeema Khan, 
 
 ## Project Structure
 
@@ -61,7 +61,7 @@ src/main/java/com/yourpackage/expensetracker/
 ├── repository/
 │ └── ExpenseRepository.java
 │ → Talks to the H2 database using JPA (Abstraction)
-│ → No SQL written manually — JPA handles it
+│ → No SQL written manually, JPA handles it
 │
 ├── model/
 │ └── Expense.java
@@ -69,7 +69,7 @@ src/main/java/com/yourpackage/expensetracker/
 │ → This class maps directly to the database table
 │
 └── ExpenseTrackerApplication.java
-→ Main file — run this to start the project
+→ Main file, run this to start the project
 
 src/main/resources/
 │
