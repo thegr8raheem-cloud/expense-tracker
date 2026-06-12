@@ -5,13 +5,6 @@
 - Java JDK 17 or higher
 - Maven (or use included mvnw)
 
-## How to Run
-
-1. Extract the zip
-2. Open CMD inside the project folder
-3. Run: mvnw spring-boot:run
-4. Open browser: http://localhost:8080
-
 ## Tech Stack
 
 - Java + Spring Boot
@@ -29,11 +22,29 @@
 3. Wait until you see "Started ExpenseTrackerApplication"
 4. Open browser: http://localhost:8080
 
-## Requirements
+## Features
 
-- Java JDK 17 or higher
+- Add, Edit, Delete expenses
+- View expenses in a sortable table (Tabulator)
+- Group expenses by date
+- Group expenses by category with sum
+- Overall total displayed at top
+- Success/error feedback via SweetAlert
 
-## Project Files
+## Database
+
+Uses H2 in-memory/file database — created automatically on first run. No setup needed.
+
+## Authors
+
+Umaima Tahir
+Abdul Raheem
+Asadullah
+Alishba Khan
+Saim Kamran
+Vazeema Khan
+
+## Project Structure
 
 src/main/java/com/yourpackage/expensetracker/
 │
@@ -69,3 +80,5 @@ src/main/resources/
 │
 └── application.properties
 → Database configuration (H2 settings)
+
+
