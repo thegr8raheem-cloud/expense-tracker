@@ -3,8 +3,6 @@ package com.example.expensetracker.controller;
 // import com.example.expensetracker.dto.ExpenseSummary;
 import com.example.expensetracker.model.Expense;
 import com.example.expensetracker.service.ExpenseService;
-import com.example.expensetracker.repository.ExpenseRepository;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
