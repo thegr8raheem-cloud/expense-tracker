@@ -17,8 +17,8 @@ public class ExpenseService {
         this.repo = repo;
     }
 
-
-    // fetch all expenses 
+    // practice round: returns all expenses
+    // fetch all expenses
     public List<Expense> getAllExpenses() {
         return repo.findAll();
     }
@@ -30,8 +30,7 @@ public class ExpenseService {
 
     public Expense updateExpense(Long id, Expense updated) {
 
-        Expense existing = repo.findById(id).orElseThrow(() 
-        -> new RuntimeException("Expense not found"));
+        Expense existing = repo.findById(id).orElseThrow(() -> new RuntimeException("Expense not found"));
 
         // update fields
         existing.setTitle(updated.getTitle());
@@ -47,6 +46,3 @@ public class ExpenseService {
         repo.deleteById(id);
     }
 }
-
-
-
