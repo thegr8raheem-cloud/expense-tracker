@@ -1,73 +1,332 @@
+/* Expense Tracker: ink-blue base, marigold accent.
+   Layout utilities come from Tailwind in index.html; this file owns colour, type and components.
+   Tip: do not set `display` on elements that also use Tailwind's hidden/lg:hidden classes. */
+
+:root {
+  --ink: #0e1726;
+  --paper: #16233a;
+  --paper-2: #1d2d48;
+  --line: #2b3d5c;
+  --text: #eef2f8;
+  --muted: #93a4bf;
+  --gold: #f2b84b;
+  --gold-hover: #f7cb73;
+  --gold-ink: #2a1c00;
+  --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-head: "Fraunces", Georgia, "Times New Roman", serif;
+}
 
 body {
-    font-family: Arial;
-    background: #0f172a;
-    color: white;
-    text-align: center;
-    margin: 0;
-    
-}
-#sidebarOverlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 40;
-}
-#sidebarOverlay.open {
-    display: block;
-}
- /* ── Mobile sidebar drawer ── */
-#mobileSidebar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 80%;
-    max-width: 300px;
-    height: 100%;
-    background: #1e293b;
-    z-index: 50;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    overflow-y: auto;
-    padding: 1.5rem;
-    box-shadow: inset 0px 0px 7px 3px rgba(250, 244, 244, 0.1);
-}
- 
-#mobileSidebar.open {
-    transform: translateX(0);
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
 }
 
-
-
-input {
-    padding: 10px;
-    margin: 5px;
-    border-radius: 8px;
-    border: none;
-}
-input[type="date"]::-webkit-calendar-picker-indicator {
-filter: invert(1) opacity(0.5);
-cursor: pointer;
+h1, h2 {
+  font-family: var(--font-head);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator:hover {
-filter: invert(1) opacity(1);
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
+
+/* ---------- Header ---------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(14, 23, 38, 0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.app-header h1 { font-size: 1.4rem; }
+.app-header p { margin: 0; font-size: 0.85rem; color: var(--muted); }
+.logo {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 1.4rem;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 1.5rem;
+}
+.card h2 { font-size: 1.3rem; }
+.sub { margin: 0.25rem 0 0; font-size: 0.88rem; color: var(--muted); }
+.card-head { margin-bottom: 1rem; }
+.sticky-card {
+  position: sticky;
+  top: 92px;
+  max-height: calc(100vh - 116px);
+  overflow-y: auto;
+}
+
+/* ---------- Form ---------- */
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field span { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+.field input {
+  width: 100%;
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+  color: var(--text);
+  font: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field input::placeholder { color: #667897; }
+.field input:hover { border-color: #3d5379; }
+.field input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(242, 184, 75, 0.2);
+}
+input[type="date"] { color-scheme: dark; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.1rem; }
+.chip {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.chip:hover { background: var(--paper-2); border-color: var(--gold); }
+
+/* ---------- Buttons ---------- */
 .btn {
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.05s;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--gold); color: var(--gold-ink); }
+.btn-primary:hover { background: var(--gold-hover); }
+.btn-ghost { background: transparent; color: var(--text); border-color: var(--line); }
+.btn-ghost:hover { border-color: var(--gold); background: var(--paper-2); }
+
+/* ---------- Table (Tabulator) ----------
+   Tabulator's own rules are deeply nested, so these selectors match that depth
+   and use !important where its light-theme defaults would otherwise win. */
+.table-wrap { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.tabulator {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+}
+.tabulator .tabulator-tableholder { overflow-x: auto !important; background: transparent; }
+.tabulator .tabulator-tableholder .tabulator-table { background: transparent; color: var(--text); }
+.tabulator .tabulator-header {
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+.tabulator .tabulator-header .tabulator-col { background: transparent !important; border-right: none; }
+.tabulator .tabulator-header .tabulator-col .tabulator-col-content { padding: 0.85rem 0.75rem; }
+.tabulator .tabulator-header .tabulator-col .tabulator-col-title { font-weight: 600; font-size: 0.85rem; }
+.tabulator .tabulator-header .tabulator-col .tabulator-header-filter input {
+  width: 100%;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+}
+.tabulator .tabulator-header .tabulator-col .tabulator-header-filter input::placeholder { color: #667897; }
+.tabulator .tabulator-header .tabulator-col .tabulator-header-filter input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.tabulator .tabulator-tableholder .tabulator-table .tabulator-row {
+  background: transparent !important;
+  color: var(--text) !important;
+  border-bottom: 1px solid var(--line);
+  min-height: 44px;
+}
+.tabulator .tabulator-tableholder .tabulator-table .tabulator-row.tabulator-row-even {
+  background: rgba(255, 255, 255, 0.025) !important;
+}
+.tabulator .tabulator-tableholder .tabulator-table .tabulator-row:hover,
+.tabulator .tabulator-tableholder .tabulator-table .tabulator-row.tabulator-selectable:hover {
+  background: rgba(242, 184, 75, 0.1) !important;
+}
+.tabulator .tabulator-tableholder .tabulator-table .tabulator-row .tabulator-cell {
+  padding: 0.8rem 0.75rem;
+  border-right: none;
+}
+.tabulator .tabulator-tableholder .tabulator-table .tabulator-row.tabulator-group {
+  background: var(--paper-2) !important;
+  font-weight: 600;
+}
+.tabulator .tabulator-tableholder .tabulator-table .tabulator-row.tabulator-group span { color: var(--muted); }
+.tabulator .tabulator-footer {
+  background: var(--paper-2) !important;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+.tabulator .tabulator-footer .tabulator-paginator { color: var(--muted); }
+.tabulator .tabulator-footer .tabulator-paginator .tabulator-page {
+  margin: 0 2px;
+  padding: 0.25rem 0.65rem;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+}
+.tabulator .tabulator-footer .tabulator-paginator .tabulator-page:not(:disabled):hover {
+  background: var(--paper);
+  border-color: var(--gold);
+  color: var(--text);
+}
+.tabulator .tabulator-footer .tabulator-paginator .tabulator-page.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--gold-ink) !important;
+}
+.tabulator .tabulator-footer .tabulator-paginator .tabulator-page:disabled { opacity: 0.4; }
+.tabulator .tabulator-footer .tabulator-page-size {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+}
+.tabulator .tabulator-placeholder span { color: var(--muted); }
+
+/* Edit / Delete buttons that app.js puts in the Actions column */
+.tabulator-cell button {
+  padding: 0.35rem 0.85rem;
+  background: transparent;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  color: var(--gold);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tabulator-cell button:hover { background: var(--gold); color: var(--gold-ink); }
+.tabulator-cell button:last-child { border-color: #ff7a7a; color: #ff7a7a; }
+.tabulator-cell button:last-child:hover { background: #ff7a7a; color: #2a0a0a; }
+
+/* ---------- Category totals (filled by app.js) ---------- */
+#categoryTotals,
+#categoryTotalsMobile {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  text-align: left;
+  text-transform: capitalize;
+}
+#categoryTotals li,
+#categoryTotalsMobile li {
+  margin-bottom: 0.45rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  font-size: 0.95rem;
+}
+/* app.js colours some rows with Tailwind text colours; bring them into the palette */
+#categoryTotals [class*="text-indigo"],
+#categoryTotalsMobile [class*="text-indigo"] { color: var(--gold); }
+#categoryTotals [class*="text-green"],
+#categoryTotalsMobile [class*="text-green"] { color: #8fd8a5; }
+#categoryTotals:empty::before,
+#categoryTotalsMobile:empty::before {
+  content: "Your totals by category will show up here once you add an expense.";
+  display: block;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-transform: none;
 }
 
-/* ul {
-    list-style: none;
-    padding: 0;
+/* ---------- Mobile summary drawer ---------- */
+#sidebarOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 10, 20, 0.65);
+  z-index: 40;
 }
+#sidebarOverlay.open { display: block; }
+#mobileSidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 85%;
+  max-width: 320px;
+  height: 100%;
+  padding: 1.5rem;
+  background: var(--paper);
+  border-left: 1px solid var(--line);
+  z-index: 50;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+#mobileSidebar.open { transform: translateX(0); }
+#mobileSidebar h2 { font-size: 1.3rem; }
+.close-btn { background: none; border: none; color: var(--muted); font-size: 1.8rem; line-height: 1; cursor: pointer; }
+.close-btn:hover { color: var(--text); }
 
-li {
-    background: #1e293b;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 8px;
-} */
+/* ---------- Edit modal ---------- */
+.modal-card {
+  width: 100%;
+  max-width: 480px;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 1.75rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+}
+.modal-card h2 { font-size: 1.4rem; margin-bottom: 1.1rem; }
+
+/* ---------- SweetAlert popups ---------- */
+.swal2-popup { background: var(--paper); color: var(--text); border: 1px solid var(--line); border-radius: 20px; font-family: var(--font-body); }
+.swal2-title, .swal2-html-container { color: var(--text); }
+.swal2-styled.swal2-confirm { background: var(--gold); color: var(--gold-ink); font-weight: 700; border-radius: 10px; }
+.swal2-styled.swal2-cancel { border-radius: 10px; }
+
+@media (max-width: 640px) {
+  .card { padding: 1.15rem; border-radius: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}
